@@ -4,13 +4,15 @@ body {
     color: white;
     font-family: sans-serif;
     letter-spacing: 0.05rem;
+    margin: 0;
+    padding: 4rem;
 }
 
 h1 {
     font-size: 3.5rem;
     display: block;
     width: fit-content;
-    margin: 4rem auto;
+    margin: 0 auto 2rem;
 }
 
 main {
