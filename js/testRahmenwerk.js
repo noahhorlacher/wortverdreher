@@ -1,15 +1,12 @@
 function testsAusführen(tests){
-    console.info(`%c🏁 ${tests.length} Test${tests.length === 1 ? ' wird' : 's werden'} ausgeführt.`,
-    'font-weight: 900; font-size: 24px; color: #aaf; padding: 24px 0;')
-
     let erfolgreicheTests = []
     let fehlgeschlageneTests = []
 
     tests.forEach((test, index) => {
         try {
             let erfolgreich = testeFunktion(test, index+1, tests.length)
-            if(erfolgreich) erfolgreicheTests.push(test.name)
-            else fehlgeschlageneTests.push(test.name)
+            if(erfolgreich) erfolgreicheTests.push(`#${index} ${test.name}`)
+            else fehlgeschlageneTests.push(`#${index} ${test.name}`)
         } catch(fehler){
             console.info(
                 `%c🚷 (${index+1}/${tests.length}) Test "${test.name}" durch Ausführungsfehler fehlgeschlagen:`,
@@ -17,7 +14,7 @@ function testsAusführen(tests){
                 fehler
                 )
             
-            fehlgeschlageneTests.push(test.name)
+            fehlgeschlageneTests.push(`#${index} ${test.name}`)
         }
     })
     
