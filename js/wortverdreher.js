@@ -1,22 +1,48 @@
-// Verdrehe Vokale im gegebenen Faden auf eine deterministische Weise.
+// Liste der Vokale, einschließlich Akzente und Umlaute, in Groß- und Kleinschreibung
+const VOKALE = 'aeiouäöüéèêëïîôöùûüAEIOUÄÖÜÉÈÊËÏÎÔÖÙÛÜæøåÆØÅğĞıİöÖüÜşŞçÇűáéíóöőúüŰÁÉÍÓÖŐÚÜ'
+
+// Verdrehe Mehrlaute im gegebenen Wort auf eine deterministische Weise.
 // Gross-/Kleinschreibung wird beibehalten.
-function verdrehe(faden) {
-    return faden.replace(/\b\w+\b/g, wort => {
-        // Erstelle ein Array von umgekehrten Vokalen im Wort
-        const vokale = Array.from(wort)
-            .filter(buchstabe => 'aeiou'.includes(buchstabe.toLowerCase()))
-            .reverse();
+function verdreheWort(wort) {
+    // Extrahiere und umkehre die Mehrlaute im Wort
+    const umgekehrteMehrlaute = extrahiereUndKehreMehrlaute(wort)
 
-        // Ersetze Vokale im Wort durch umgekehrte Vokale
-        const umgedrehtesWort = Array.from(wort)
-            .map(buchstabe => 'aeiou'.includes(buchstabe.toLowerCase()) ? vokale.shift() : buchstabe)
-            .join('');
+    // Ersetze die Mehrlaute im Wort durch die umgekehrten Mehrlaute
+    const umgedrehtesWort = ersetzeMehrlauteMitUmgekehrten(wort, umgekehrteMehrlaute)
 
-        // Stelle sicher, dass die Groß-/Kleinschreibung des ersten Buchstabens beibehalten wird
-        return wort[0] === wort[0].toUpperCase() 
-            ? umgedrehtesWort.charAt(0).toUpperCase() + umgedrehtesWort.slice(1).toLowerCase() 
-            : umgedrehtesWort;
+    return umgedrehtesWort
+}
+
+// Extrahiere die Mehrlaute im Wort und kehre sie um
+function extrahiereUndKehreMehrlaute(wort) {
+    const mehrlaute = wort.match(new RegExp(`[${VOKALE}]+`, 'g')) || []
+    return mehrlaute.reverse()
+}
+
+// Ersetze die Mehrlaute im Wort durch die umgekehrten Mehrlaute
+function ersetzeMehrlauteMitUmgekehrten(wort, umgekehrteMehrlaute) {
+    return wort.replace(new RegExp(`[${VOKALE}]+`, 'g'), match => {
+        const umgekehrterMehrLaut = umgekehrteMehrlaute.shift()
+        // Beibehalten der Groß-/Kleinschreibung des ersten Buchstabens
+        return match[0] === match[0].toUpperCase()
+            ? umgekehrterMehrLaut.charAt(0).toUpperCase() + umgekehrterMehrLaut.slice(1).toLowerCase()
+            : umgekehrterMehrLaut.toLowerCase()
     })
 }
 
-export default verdrehe
+// Verdrehe Mehrlaute in jedem Wort eines gegebenen Fadens auf eine deterministische Weise.
+// Gross-/Kleinschreibung wird beibehalten.
+function verdreheSatz(faden) {
+    // Teile den Faden in separate Worte
+    const worte = faden.split(/\s+/)
+
+    // Verdrehe die Mehrlaute in jedem Wort
+    const verdrehteWorte = worte.map(verdreheWort)
+
+    // Füge die verdrehten Worte wieder zum Faden zusammen
+    const verdrehterSatz = verdrehteWorte.join(' ')
+
+    return verdrehterSatz
+}
+
+export { verdreheSatz, verdreheWort }
