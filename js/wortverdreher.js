@@ -1,48 +1,64 @@
-// Liste der Vokale, einschließlich Akzente und Umlaute, in Groß- und Kleinschreibung
-const VOKALE = 'aeiouäöüéèêëïîôöùûüAEIOUÄÖÜÉÈÊËÏÎÔÖÙÛÜæøåÆØÅğĞıİöÖüÜşŞçÇűáéíóöőúüŰÁÉÍÓÖŐÚÜ'
+// Liste der Vokale, einschließlich Akzente und Umlaute, in Kleinschreibung
+const VOKALE = 'aeiouäöüéèêëïîôöùûüæøåğıöüşçűáéíóöőúü';
 
-// Verdrehe Mehrlaute im gegebenen Wort auf eine deterministische Weise.
+// Liste der spezifischen Vokalmuster, die ignoriert werden sollen, in Kleinschreibung
+const IGNORIEREN = ['ie', 'ei', 'qu', 'eu', 'au', 'ai'];
+
+// Liste der Worttrennzeichen
+const WORT_TRENNZEICHEN = /\s+|-/;
+
+// Erstelle einen regulären Ausdruck, der die Vokalmuster, die ignoriert werden sollen, ausschließt
+const REGEX_VOKALE = new RegExp(`(${IGNORIEREN.join('|')})|([${VOKALE}]+)`, 'gi');
+
+// Funktion zum Extrahieren der Vokalgruppen aus einem Wort
+function extrahiereVokalgruppen(wort) {
+    return wort.match(REGEX_VOKALE) || [];
+}
+
+// Funktion zum Verschieben der Vokalgruppen in einem Wort
+function verschiebeVokalgruppen(vokalgruppen, zufälligkeit) {
+    const verschiebungsIndex = Math.floor(vokalgruppen.length * zufälligkeit) % vokalgruppen.length;
+    return [...vokalgruppen.slice(verschiebungsIndex), ...vokalgruppen.slice(0, verschiebungsIndex)];
+}
+
+// Funktion zum Ersetzen der Vokalgruppen in einem Wort durch die verschobenen Vokalgruppen
+function ersetzeVokalgruppen(wort, verschobeneVokalgruppen) {
+    let i = 0;
+    return wort.replace(REGEX_VOKALE, match => {
+        if (IGNORIEREN.includes(match.toLowerCase())) {
+            return match; // Beibehalten der Groß-/Kleinschreibung des gesamten MehrLauts
+        } else {
+            const verschobeneVokalgruppe = verschobeneVokalgruppen[i++];
+            // Beibehalten der Groß-/Kleinschreibung des ersten Buchstabens
+            return match[0] === match[0].toUpperCase()
+                ? verschobeneVokalgruppe.charAt(0).toUpperCase() + verschobeneVokalgruppe.slice(1).toLowerCase()
+                : verschobeneVokalgruppe.toLowerCase();
+        }
+    });
+}
+
+// Funktion zum Verzerren der Vokalgruppen in einem Wort
+function verdreheWort(wort, zufälligkeit = .99) {
+    if(zufälligkeit >= 1) zufälligkeit = .99
+
+    const vokalgruppen = extrahiereVokalgruppen(wort).filter(vg => !IGNORIEREN.includes(vg.toLowerCase()));
+    const verschobeneVokalgruppen = verschiebeVokalgruppen(vokalgruppen, zufälligkeit);
+    return ersetzeVokalgruppen(wort, verschobeneVokalgruppen);
+}
+
+// Funktion zum Verzerren der Vokalgruppen in jedem Wort eines gegebenen Satzes auf eine deterministische Weise.
 // Gross-/Kleinschreibung wird beibehalten.
-function verdreheWort(wort) {
-    // Extrahiere und umkehre die Mehrlaute im Wort
-    const umgekehrteMehrlaute = extrahiereUndKehreMehrlaute(wort)
+function verdreheSatz(satz, zufälligkeit = .99) {
+    if(zufälligkeit >= 1) zufälligkeit = .99
 
-    // Ersetze die Mehrlaute im Wort durch die umgekehrten Mehrlaute
-    const umgedrehtesWort = ersetzeMehrlauteMitUmgekehrten(wort, umgekehrteMehrlaute)
+    // Teile den Satz in separate Worte und Trennzeichen
+    const elemente = satz.split(new RegExp(`(${WORT_TRENNZEICHEN.source})`));
 
-    return umgedrehtesWort
+    // Verdrehe die Vokalgruppen in jedem Wort
+    const verdrehteElemente = elemente.map(element => WORT_TRENNZEICHEN.test(element) ? element : verdreheWort(element, zufälligkeit));
+
+    // Füge die verdrehten Worte und Trennzeichen wieder zum Satz zusammen
+    return verdrehteElemente.join('');
 }
 
-// Extrahiere die Mehrlaute im Wort und kehre sie um
-function extrahiereUndKehreMehrlaute(wort) {
-    const mehrlaute = wort.match(new RegExp(`[${VOKALE}]+`, 'g')) || []
-    return mehrlaute.reverse()
-}
-
-// Ersetze die Mehrlaute im Wort durch die umgekehrten Mehrlaute
-function ersetzeMehrlauteMitUmgekehrten(wort, umgekehrteMehrlaute) {
-    return wort.replace(new RegExp(`[${VOKALE}]+`, 'g'), match => {
-        const umgekehrterMehrLaut = umgekehrteMehrlaute.shift()
-        // Beibehalten der Groß-/Kleinschreibung des ersten Buchstabens
-        return match[0] === match[0].toUpperCase()
-            ? umgekehrterMehrLaut.charAt(0).toUpperCase() + umgekehrterMehrLaut.slice(1).toLowerCase()
-            : umgekehrterMehrLaut.toLowerCase()
-    })
-}
-
-// Verdrehe Mehrlaute in jedem Wort eines gegebenen Fadens auf eine deterministische Weise.
-// Gross-/Kleinschreibung wird beibehalten.
-function verdreheSatz(faden) {
-    // Teile den Faden in separate Worte und Trennzeichen
-    const elemente = faden.split(/(\s+)/)
-
-    // Verdrehe die Mehrlaute in jedem Wort
-    const verdrehteElemente = elemente.map(element => /\s+/.test(element) ? element : verdreheWort(element))
-
-    // Füge die verdrehten Worte und Trennzeichen wieder zum Faden zusammen
-    const verdrehterSatz = verdrehteElemente.join('')
-
-    return verdrehterSatz
-}
-
-export { verdreheSatz, verdreheWort }
+export { verdreheSatz, verdreheWort };

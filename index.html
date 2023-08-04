@@ -14,10 +14,18 @@
     <h1>Wortverdreher</h1>
     <main>
         <textarea placeholder="Gib etwas ein."></textarea>
+        
+        <label for="zufälligkeitsSchieber">Zufälligkeit</label>
+        <div id="schieberBeinhalter">
+            <input type="range" id="zufälligkeitsSchieber" value="1" min="0" max="1" step="0.01">
+            <label for="zufälligkeitsSchieber" id="schieberWertBenennung">1.00</label>
+        </div>
+
         <div id="überprüfKastenBeinhalter">
             <input type="checkbox" id="automatischÜberprüfKasten" checked>
             <label for="automatischÜberprüfKasten">Verdreh's mir automatisch!</label>
         </div>
+
         <button>Verdreh's mir, du Sau! 🥵</button>
         <h2>Austuh</h2>
         <p>Hier erscheint dein Ergebnis.</p>

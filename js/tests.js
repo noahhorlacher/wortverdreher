@@ -24,7 +24,7 @@ function testeSatz(){
 function testeSatzMitNeuerZeile(){
     const gegeben = 'Eine Geschichte:\nNichts ist echt.'
     const rückgabe = verdreheSatz(gegeben)
-    const erwartet = 'Enei Geschichte:\nNichts ist echt.'
+    const erwartet = 'Eine Geschechti:\nNichts ist echt.'
 
     const ergebnis = rückgabe === erwartet
 
@@ -71,6 +71,56 @@ function testeWeissRaumBehaltung(){
     return { gegeben, erwartet, rückgabe, ergebnis }
 }
 
+function testeBindestrichBehaltung(){
+    const gegeben = 'Augen-Blicke'
+    const rückgabe = verdreheSatz(gegeben)
+    const erwartet = 'Augen-Blecki'
+
+    const ergebnis = rückgabe === erwartet
+
+    return { gegeben, erwartet, rückgabe, ergebnis }
+}
+
+function testeIeBleibt(){
+    const gegeben = 'Wiesenziege'
+    const rückgabe = verdreheSatz(gegeben)
+    const erwartet = 'Wiesenziege'
+
+    const ergebnis = rückgabe === erwartet
+
+    return { gegeben, erwartet, rückgabe, ergebnis }
+}
+
+function testeEiBleibt(){
+    const gegeben = 'Eigentum'
+    const rückgabe = verdreheSatz(gegeben)
+    const erwartet = 'Eiguntem'
+
+    const ergebnis = rückgabe === erwartet
+
+    return { gegeben, erwartet, rückgabe, ergebnis }
+}
+
+function testeDoppelEi(){
+    const gegeben = 'Einerlei'
+    const rückgabe = verdreheSatz(gegeben)
+    const erwartet = 'Einerlei'
+
+    const ergebnis = rückgabe === erwartet
+
+    return { gegeben, erwartet, rückgabe, ergebnis }
+}
+
+function testeQu(){
+    const gegeben = 'Qudefqwa'
+    const rückgabe = verdreheSatz(gegeben)
+    const erwartet = 'Qudafqwe'
+
+    const ergebnis = rückgabe === erwartet
+
+    return { gegeben, erwartet, rückgabe, ergebnis }
+}
+
 testsAusführen([
     testeVertauschung,
     testeSatz,
@@ -78,5 +128,10 @@ testsAusführen([
     testeGrossschreibung,
     testeFolgenBleibenZusammen,
     testeAkzente,
-    testeWeissRaumBehaltung
+    testeWeissRaumBehaltung,
+    testeIeBleibt,
+    testeEiBleibt,
+    testeDoppelEi,
+    testeQu,
+    testeBindestrichBehaltung
 ])
