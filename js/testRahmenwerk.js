@@ -27,7 +27,7 @@ function testsAusführen(tests){
         for(let fehlgeschlagenerTest of fehlgeschlageneTests)
             console.info(`%c\t- ${fehlgeschlagenerTest}`, 'color: #f00')
     } else {
-        console.info('%c🎉 Alle Tests waren erfolgreich', 'font-size: 24px; color: #0f0; padding: 24px 0;')
+        console.info('%c🎉 Alle Tests waren erfolgreich!', 'font-size: 24px; color: #0f0; padding: 24px 0;')
     }
 }
 
