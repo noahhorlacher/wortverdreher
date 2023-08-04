@@ -33,14 +33,14 @@ function ersetzeMehrlauteMitUmgekehrten(wort, umgekehrteMehrlaute) {
 // Verdrehe Mehrlaute in jedem Wort eines gegebenen Fadens auf eine deterministische Weise.
 // Gross-/Kleinschreibung wird beibehalten.
 function verdreheSatz(faden) {
-    // Teile den Faden in separate Worte
-    const worte = faden.split(/\s+/)
+    // Teile den Faden in separate Worte und Trennzeichen
+    const elemente = faden.split(/(\s+)/)
 
     // Verdrehe die Mehrlaute in jedem Wort
-    const verdrehteWorte = worte.map(verdreheWort)
+    const verdrehteElemente = elemente.map(element => /\s+/.test(element) ? element : verdreheWort(element))
 
-    // Füge die verdrehten Worte wieder zum Faden zusammen
-    const verdrehterSatz = verdrehteWorte.join(' ')
+    // Füge die verdrehten Worte und Trennzeichen wieder zum Faden zusammen
+    const verdrehterSatz = verdrehteElemente.join('')
 
     return verdrehterSatz
 }
