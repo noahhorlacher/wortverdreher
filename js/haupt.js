@@ -6,9 +6,9 @@ const austuh = document.querySelector('p')
 const eintuh = document.querySelector('textarea')
 
 let automatischesVerdrehen = automatischÜberprüfKasten.checked = true
+automatischVerdrehenUmschalten()
 
 function austuhAktualisieren(){
-    console.log('aktualisiert')
     austuh.innerText = verdreheSatz(eintuh.value)
 }
 verdrehKnopf.addEventListener('click', austuhAktualisieren)
