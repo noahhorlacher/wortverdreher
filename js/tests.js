@@ -61,11 +61,22 @@ function testeAkzente(){
     return { gegeben, erwartet, rückgabe, ergebnis }
 }
 
+function testeWeissRaumBehaltung(){
+    const gegeben = 'Dies\tIst\nein Test\n\n'
+    const rückgabe = verdreheSatz(gegeben)
+    const erwartet = 'Dies\tIst\nein Test\n\n'
+
+    const ergebnis = rückgabe === erwartet
+
+    return { gegeben, erwartet, rückgabe, ergebnis }
+}
+
 testsAusführen([
     testeVertauschung,
     testeSatz,
     testeSatzMitNeuerZeile,
     testeGrossschreibung,
     testeFolgenBleibenZusammen,
-    testeAkzente
+    testeAkzente,
+    testeWeissRaumBehaltung
 ])
