@@ -41,22 +41,21 @@ button {
     display: block;
     margin: 2rem auto 6rem auto;
     font-size: 1.3rem;
-
-    background: linear-gradient(to right, rgb(122, 0, 128), rgb(21, 21, 136));
-    background-origin: top left;
-    background-size: 200% 100%;
-    background-position: top left;
+    background: linear-gradient(to right, hsl(297, 100%, 25%), hsl(240, 73%, 31%));
+    background-origin: center;
+    background-position: center left;
+    background-size: 100% 100%;
 
     padding: .6rem 1rem;
 
-    box-shadow: rgba(122, 0, 128, 0.6) 0px 10px 40px -7px;
-
-    transition: background-position .3s, box-shadow .3s;
+    box-shadow: hsla(240, 73%, 31%, .6) 0px 10px 40px -7px;
+    
+    transition: background-size .3s, box-shadow .3s;
 }
 
 button:hover {
-    background-position: top right;
-    box-shadow: rgba(21, 21, 136, 0.6) 0px 10px 40px -7px;
+    background-size: 200% 100%;
+    box-shadow: hsla(297, 100%, 25%, .6) 0px 10px 40px -7px;
 }
 
 h2 {
